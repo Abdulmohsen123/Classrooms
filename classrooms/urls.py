@@ -7,6 +7,13 @@ from classes import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+
+    path('signup/',views.signup ,name='signup'),
+    path('signin/',views.signin ,name='signin'),
+    path('signout/',views.signout ,name='signout'),
+
+    path('classrooms/create/student/<int:classroom_id>/', views.student_create, name='student-create'),
+
     path('classrooms/', views.classroom_list, name='classroom-list'),
     path('classrooms/<int:classroom_id>/', views.classroom_detail, name='classroom-detail'),
 

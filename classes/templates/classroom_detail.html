@@ -1,6 +1,4 @@
-{% extends "base.html" %}
-
-{% block content %}
+{% extends "base.html" %} {% block content %}
 <div class="card text-center">
   <div class="card-header" style="background-color: #e3f2fd; color: 000034;">
     Classroom Details
@@ -10,7 +8,25 @@
     <p class="card-text" style="color: 000034;">{{classroom.year}}</p>
     <a href="{% url 'classroom-update' classroom.id %}" class="btn" style="background-color: #000034; color: white;">Update</a>
     <a href="{% url 'classroom-delete' classroom.id %}" class="btn" style="background-color: #FFA500; color: #000034;">Delete</a>
+    <a href="{% url 'student-create' classroom.id %}" class="btn btn-outline-dark">Add Student</a>
+    {% comment %}
+    <a class="btn btn-outline-dark">Add Student</a> {% endcomment %}
   </div>
+</div>
+<div class="card-body">
+
+  <ui>
+    {% for student in students %}
+    <li>
+      <h5 class="card-title" style="color: 000034;">{{student.name}}</h5>
+    </li>
+
+    <p>{{student.exam_grade}}</p>
+    <p>{{student.gender}}</p>
+    <p>{{student.date_of_birth}}</p>
+    </li>
+    {% endfor %}
+  </ui>
 </div>
 
 {% endblock content %}
