@@ -57,19 +57,16 @@ def student_delete(request, student_id):
 def student_update(request,student_id):
 	student = Student.objects.get(id=student_id)
 	form = StudentForm(instance=student)
-	# print(request.method)
-	# if request.method == "GET":
-	# 	if request.user.is_authenticated:
-	# 		student = form.save(commit=False)
-	# 		student.classroom.id = student_id
-	# 		student.save()
-	# 		messages.success(request, "Successfully Created!")
-	# 		#return redirect('classroom-list')
-	# 		#return redirect('classroom-detail')
-	# 	print (form.errors)
+	if request.method == "POST":
+		form = StudentForm(request.POST, request.FILES or None, instance=student)
+		if form.is_valid():
+			form.save()
+			messages.success(request, "Successfully Edited!")
+			return redirect('classroom-list')
+		print (form.errors)
 	context = {
 	"form": form,
-	'student.id': student_id,
+	"student": student,
 	}
 	return render(request, 'update_student.html', context)
 
