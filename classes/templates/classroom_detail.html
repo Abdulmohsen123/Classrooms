@@ -24,6 +24,12 @@
     <p>{{student.exam_grade}}</p>
     <p>{{student.gender}}</p>
     <p>{{student.date_of_birth}}</p>
+
+    <a href="{% url 'student-update' student.id %}" class="btn" style="background-color: #000034; color: white;">Update</a>
+    <a href="{% url 'student-delete' student.id %}" class="btn" style="background-color: #FFA500; color: #000034;">Delete</a>
+  </br>
+  </br>
+  </br>
     </li>
     {% endfor %}
   </ui>

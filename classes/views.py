@@ -22,25 +22,56 @@ def classroom_detail(request, classroom_id):
 	}
 	return render(request, 'classroom_detail.html', context)
 
+def student_detail(request, student_id):
+	student = Student.objects.get(id=student_id)
+	form = StudentForm(instance=student)
+	context = {
+		"form": form,
+	}
+	return render(request, 'update_student.html', context)
+
 def student_create(request,classroom_id):
 	form = StudentForm()
+	classroom = Classroom.objects.get(id=classroom_id)
 	if request.method == "POST":
-		if request.user.is_authenticated():
-			form = Student(request.POST, request.FILES or None)
+		if request.user.is_authenticated:
+			form = StudentForm(request.POST, request.FILES or None)
 			if form.is_valid():
 				student = form.save(commit=False)
-				print(classroom_id)
-				student.classroom.id = classroom_id
-				print(student.classroom)
+				student.classroom = classroom
 				student.save()
 				messages.success(request, "Successfully Created!")
-				return redirect('classroom-list')
-		print (form.errors)
+				#return redirect('classroom-list')
+				return redirect('classroom-detail',classroom_id)
 	context = {
 	"form": form,
+	"classroom": classroom,
 	}
-	#return redirect('classroom-list')
-	return render(request, 'create_classroom.html', context)
+	return render(request, 'create_student.html', context)
+
+def student_delete(request, student_id):
+	Student.objects.get(id=student_id).delete()
+	messages.success(request, "Successfully Deleted!")
+	return redirect('classroom-list')
+
+def student_update(request,student_id):
+	student = Student.objects.get(id=student_id)
+	form = StudentForm(instance=student)
+	# print(request.method)
+	# if request.method == "GET":
+	# 	if request.user.is_authenticated:
+	# 		student = form.save(commit=False)
+	# 		student.classroom.id = student_id
+	# 		student.save()
+	# 		messages.success(request, "Successfully Created!")
+	# 		#return redirect('classroom-list')
+	# 		#return redirect('classroom-detail')
+	# 	print (form.errors)
+	context = {
+	"form": form,
+	'student.id': student_id,
+	}
+	return render(request, 'update_student.html', context)
 
 def classroom_create(request):
 	form = ClassroomForm()
